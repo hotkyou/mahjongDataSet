@@ -2,3 +2,4 @@ json
 .DS_Store
 .env
 enviroment.py
+__pycache__
