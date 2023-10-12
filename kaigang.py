@@ -1,2 +1,2 @@
-def kaigang(i):
+def kaigang(self, i):
     print("カンドラ")

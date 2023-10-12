@@ -1,2 +1,2 @@
-def dapai(i):
-  print("捨て牌")
+def dapai(self, i):
+    print("捨て牌")

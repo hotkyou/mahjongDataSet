@@ -1,2 +1,2 @@
-def zimo(i):
-  print("ツモ")
+def zimo(self, i):
+    print("ツモ")
