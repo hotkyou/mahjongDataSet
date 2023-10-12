@@ -1,2 +1,2 @@
-def gangzimo(i):
-  print("カンツモ")
+def gangzimo(self, i):
+    print("カンツモ")

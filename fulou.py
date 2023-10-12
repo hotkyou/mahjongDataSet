@@ -1,2 +1,2 @@
-def fulou(i):
-  print("鳴き")
+def fulou(self, i):
+    print("鳴き")
