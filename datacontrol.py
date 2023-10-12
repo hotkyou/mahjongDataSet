@@ -50,9 +50,9 @@ class DataControl:
                             fulou.fulou(i)
                         elif("gang" in i):
                             gang.gang(i)
-                        elif("gangzimo"):
+                        elif("gangzimo"in i):
                             gangzimo.gangzimo(i)
-                        elif("kaigang"):
+                        elif("kaigang"in i):
                             kaigang.kaigang(i)
                         elif("hule" in i):
                             hule.hule(i)
