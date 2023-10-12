@@ -5,17 +5,7 @@ import glob
 import tqdm
 import numpy as np
 import enviroment as env
-import dapai
-import fulou
-import kaigang
-import hule
-import pingju
-import gang
-import gangzimo
-import zimo
-import error
-import qipai
-
+import dapai, fulou, kaigang, hule, pingju, gang, gangzimo, zimo, error, qipai
 
 class DataControl:
     def __init__(self):
@@ -25,8 +15,11 @@ class DataControl:
         self.input_dir = 'json'
         self.json_list = glob.glob('*.json')
         self.writter = csv.writer(open("csv/data.csv", mode="w", newline=""))
-        self.all = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7',
-                    'p8', 'p9', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 'z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7']
+        self.all = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8',
+                    'p9', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 'z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7']
+        self.dorall = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'm0', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6',
+                    'p7', 'p8', 'p9', 'p0', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's0', 'z1', 'z2', 'z3',
+                    'z4', 'z5', 'z6', 'z7']
 
     def createArray(self):
         self.tehaiok = [[0 for i in range(14)] for j in range(4)]  # 手牌4人分用意
@@ -61,9 +54,9 @@ class DataControl:
                             fulou.fulou(self, i)
                         elif ("gang" in i):
                             gang.gang(self, i)
-                        elif ("gangzimo"):
+                        elif ("gangzimo" in i):
                             gangzimo.gangzimo(self, i)
-                        elif ("kaigang"):
+                        elif ("kaigang" in i):
                             kaigang.kaigang(self, i)
                         elif ("hule" in i):
                             hule.hule(self, i)
