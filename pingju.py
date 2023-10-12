@@ -1,2 +1,2 @@
-def pingju(i):
-    print("流self,局")
+def pingju(self, i):
+    print("流局")
