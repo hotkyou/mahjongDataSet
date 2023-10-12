@@ -1,2 +1,2 @@
-def hule(i):
-  print("和了")
+def hule(self, i):
+    print("和了")
