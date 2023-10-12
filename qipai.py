@@ -1,2 +1,2 @@
-def qipai(i):
-  print("配牌")
+def qipai(self, i):
+    print("配牌")

@@ -1,2 +1,2 @@
-def error(i):
-  print("error")
+def error(self, i):
+    print("error")

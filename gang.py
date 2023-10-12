@@ -1,2 +1,2 @@
-def gang(i):
-  print("カン")
+def gang(self, i):
+    print("カン")
