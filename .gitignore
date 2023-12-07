@@ -4,7 +4,12 @@ json1
 .env
 enviroment.py
 __pycache__
+a.json
+selectmodel_new.py
+selectmodel.py
+selectmodel2.py
 
+lightgbm_model.pkl
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
