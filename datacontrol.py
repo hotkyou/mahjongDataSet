@@ -12,10 +12,11 @@ class DataControl:
         # jsonのファイル指定 (仮置き)
         self.url = env.json
 
-        self.writer = csv.writer(open("data.csv", mode="w", newline=""))
+        self.folder_path = "/Users/hotkyou/dev/git/mahjongDataSet/json1/-json"
+        self.json_files = glob.glob(os.path.join(self.folder_path, '**/*.json'), recursive=True)
+        self.writer = csv.writer(open("/Volumes/SSD-PUTA/data/-.csv", mode="w", newline=""))
         self.input_dir = 'json'
-        self.json_list = glob.glob('json/*.json')
-        self.writter = csv.writer(open("csv/data.csv", mode="w", newline=""))
+        self.json_list = glob.glob('json1/*.json')
         self.all = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8',
                     'p9', 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 'z1', 'z2', 'z3', 'z4', 'z5', 'z6', 'z7']
         self.dorall = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'm0', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6',
@@ -35,37 +36,43 @@ class DataControl:
         self.tiles = 70  # 残り牌数
         
     def loadJson(self):
-        for i in tqdm.tqdm(range(len(self.json_list))):
+        print(len(self.json_files))
+        for i in tqdm.tqdm(range(len(self.json_files))):
             np.pi*np.pi
-            with open(self.json_list[i]) as file:
+            with open(self.json_files[i]) as file:
             #with open(self.url) as file:
                 for line in file:
                     jsondata = json.loads(line)
                     self.data = jsondata["log"]
-                    # print(self.data)
-                    for data in self.data:
-                        for i in data:
-                            if "qipai" in i:
-                                qipai.qipai(self, i)
-                            elif "zimo" in i:
-                                zimo.zimo(self, i)
-                            elif "dapai" in i:
-                                dapai.dapai(self, i)
-                            elif "fulou" in i:
-                                fulou.fulou(self, i)
-                            elif "gang" in i:
-                                gang.gang(self, i)
-                            elif "gangzimo" in i:
-                                gangzimo.gangzimo(self, i)
-                            elif "kaigang" in i:
-                                kaigang.kaigang(self, i)
-                            elif "hule" in i:
-                                hule.hule(self, i)
-                            elif "pingju" in i:
-                                pingju.pingju(self, i)
-                            else:
-                                error.error(self, i)
-                                raise ValueError("aaa")
+                    title = jsondata["title"]
+                    if "三" in title:
+                        print(title)
+                        break
+                    else:
+                        # print(self.data)
+                        for data in self.data:
+                            for i in data:
+                                if "qipai" in i:
+                                    qipai.qipai(self, i)
+                                elif "zimo" in i:
+                                    zimo.zimo(self, i)
+                                elif "dapai" in i:
+                                    dapai.dapai(self, i)
+                                elif "fulou" in i:
+                                    fulou.fulou(self, i)
+                                elif "gang" in i:
+                                    gang.gang(self, i)
+                                elif "gangzimo" in i:
+                                    gangzimo.gangzimo(self, i)
+                                elif "kaigang" in i:
+                                    kaigang.kaigang(self, i)
+                                elif "hule" in i:
+                                    hule.hule(self, i)
+                                elif "pingju" in i:
+                                    pingju.pingju(self, i)
+                                else:
+                                    error.error(self, i)
+                                    raise ValueError("aaa")
 
 DataControl = DataControl()
 DataControl.loadJson()

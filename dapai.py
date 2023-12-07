@@ -46,7 +46,7 @@ def dapai(self, i):
             index = (player + m) % len(self.score)
             data.append(self.score[index])
         data.append(self.tiles) #残り牌数
-        data.append(tmp) #何を捨てたか
+        data.append(self.dorall.index(tmp)) #何を捨てたか
         self.writer.writerow(data)
         # -- CSV処理終了 --
         
