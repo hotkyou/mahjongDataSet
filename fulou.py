@@ -1,9 +1,26 @@
+from collections import Counter
+
 def fulou(self, i):
     #print("鳴き")
     #print(i)
     player = i["fulou"]["l"]
     tile = i["fulou"]["m"]
     mpsz = ""
+    
+    # csv出力処理
+    if self.todo == 1 or self.todo == 2 or self.todo == 3:
+        print(tile)
+        if any(value == 4 for value in Counter(tile).values()): #カン
+            #raise ValueError("カン")
+            
+            pass
+        elif any(value >= 2 for value in Counter(tile).values()): #ぽん
+            #raise ValueError("ポン")
+            
+            pass
+        else:   #チー
+            #raise ValueError("チー")
+            pass
     
     for num in range(len(tile)):
         if tile[num] == "m" or tile[num] == "p" or tile[num] == "s" or tile[num] == "z":
