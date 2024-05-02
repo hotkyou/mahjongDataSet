@@ -8,6 +8,7 @@ def dapai(self, i):
     player = i["dapai"]["l"]
     tile = i["dapai"]["p"]
     tmp = ""
+    tehaitmp = []
     
     if self.reach[player] != 1: #リーチしていない時
         if len(tile) >= 3:
@@ -66,6 +67,15 @@ def dapai(self, i):
             raise ValueError("手配がマイナスに！！")
     else:
         raise ValueError("手牌に存在しない")
+    
+    #手牌一時保存・手牌に捨て牌追加して鳴きチェック
+    tehaitmp = self.tehaiok.copy()
+    print(self.tehaiok)
+    for tehaiplayer, tehainakami in enumerate(tehaitmp):
+        #print(tehaiplayer, tehainakami)
+        if tehaiplayer != player:   #捨て牌を捨てた本人は鳴けないのでスキップ
+            if self.reach[tehaiplayer] != 1: #立直してない人のみ
+                tehaitmp[tehaiplayer][self.dorall.index(tmp)] += 1
 
     if self.todo == 1: #ぽん
         for n, o in enumerate(self.tehaiok):
@@ -74,16 +84,16 @@ def dapai(self, i):
                 pass
     elif self.todo == 2: #チー
         for n, o in enumerate(self.tehaiok):
-            print(n, o)
+            #print(n, o)
             if n != player:
                 pass
     elif self.todo == 3: #カンをしたらgangで削除処理　全プレイヤーの手牌を処理
-        print(player)
+        #print(player)
         for n, o in enumerate(self.tehaiok):
-            print(n, o)
+            #print(n, o)
             if n != player: #鳴いた人以外のカンできるかチェック
                 if Counter(o)[3] >= 1:  # 明カン
-                    print(Counter(o))
+                    #print(Counter(o))
                     #raise ValueError("カン3")
                     data = []
                     data += self.tehaiok[player] #手牌
@@ -110,8 +120,9 @@ def dapai(self, i):
                     pass
             else:
                 if Counter(o)[4] >= 1:  # 暗カン
-                    print(Counter(o))
-                    print(self.naki[player])
+                    #print(Counter(o))
+                    #print(self.naki[player])
+                    pass
                     #raise ValueError("カン４")
     else:
-        raise ValueError("todo未定義")
+        pass

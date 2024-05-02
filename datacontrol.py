@@ -12,7 +12,7 @@ class DataControl:
         # jsonのファイル指定 (仮置き)
         self.url = env.json
 
-        self.todo = 1 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
+        self.todo = 0 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
         self.folder_path = "/Users/hotkyou/dev/git/mahjongDataSet/json1/2012json"
         self.json_files = glob.glob(os.path.join(self.folder_path, '**/*.json'), recursive=True)
         self.writer = csv.writer(open("test.csv", mode="w", newline=""))

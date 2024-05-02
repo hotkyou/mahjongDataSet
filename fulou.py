@@ -9,7 +9,7 @@ def fulou(self, i):
     
     # csv出力処理
     if self.todo == 1 or self.todo == 2 or self.todo == 3:
-        print(tile)
+        #print(tile)
         if any(value == 4 for value in Counter(tile).values()): #カン
             #raise ValueError("カン")
             
