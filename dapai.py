@@ -8,7 +8,7 @@ def dapai(self, i):
     player = i["dapai"]["l"]
     tile = i["dapai"]["p"]
     tmp = ""
-    tehaitmp = []
+    tehaitmp = self.tehaiok.copy()
     
     if self.reach[player] != 1: #リーチしていない時
         if len(tile) >= 3:
@@ -69,13 +69,14 @@ def dapai(self, i):
         raise ValueError("手牌に存在しない")
     
     #手牌一時保存・手牌に捨て牌追加して鳴きチェック
-    tehaitmp = self.tehaiok.copy()
-    print(self.tehaiok)
+    #print(tehaitmp)
     for tehaiplayer, tehainakami in enumerate(tehaitmp):
         #print(tehaiplayer, tehainakami)
         if tehaiplayer != player:   #捨て牌を捨てた本人は鳴けないのでスキップ
             if self.reach[tehaiplayer] != 1: #立直してない人のみ
-                tehaitmp[tehaiplayer][self.dorall.index(tmp)] += 1
+                #tehaitmp[tehaiplayer][self.dorall.index(tmp)] += 1
+                print(tehaiplayer, tehaitmp[tehaiplayer])
+                
 
     if self.todo == 1: #ぽん
         for n, o in enumerate(self.tehaiok):
