@@ -120,7 +120,7 @@ def dapai(self, i):
                                     data.extend(self.discard[index])
                                 for m in range(len(self.score)): #点数自分から見て
                                     index = (tehaiplayer + m) % len(self.score)
-                                    data.append(self.score[index])
+                                    data.append(self.score[index] // 100)
                                 data.append(self.tiles) #残り牌数
                                 data.append(0) #0が鳴きなし 1がカン
                                 self.writer.writerow(data)
