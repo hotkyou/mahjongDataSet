@@ -99,12 +99,13 @@ def dapai(self, i):
                                 #print(indexes)
                                 #print(tehainakami)
                                 #print(self.dorall.index(tmp))
-                                print(self.tehaiok)
+                                #print(self.tehaiok)
+                                ## ミンカン用csv処理
                                 data = []
                                 data += tehainakami #手牌
                                 for j in range(len(self.reach)): #リーチ自分から見て
                                     index = (tehaiplayer + j) % len(self.reach)
-                                    print(index)
+                                    #print(index)
                                     data.append(self.reach[index])
                                 data += self.dora #ドラ34
                                 data.append(self.parentdora) #場風
@@ -122,5 +123,7 @@ def dapai(self, i):
                                     data.append(self.score[index])
                                 data.append(self.tiles) #残り牌数
                                 data.append(0) #0が鳴きなし 1がカン
+                                self.writer.writerow(data)
+                                ## ミンカン用csv処理終了
                     else:
                         raise ValueError("todoがおかしい")
