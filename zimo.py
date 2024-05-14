@@ -7,9 +7,9 @@ def zimo(self, i):
     
     self.tiles -= 1
     #print(self.tehaiok[i[z]["l"]])
+    self.tehaiok[i[z]["l"]][self.dorall.index(i[z]["p"])] += 1
+    
     if self.reach[i[z]["l"]] != 1:
-        self.tehaiok[i[z]["l"]][self.dorall.index(i[z]["p"])] += 1
-        
         #カカン処理
         if self.todo == 3:
             tehaitmp = []
