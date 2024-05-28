@@ -91,18 +91,25 @@ def dapai(self, i):
                                 pass
                     elif self.todo == 3: #カンをしたらgangで削除処理　全プレイヤーの手牌を処理
                         indexes = []
-                        for count, element in enumerate(tehainakami): #捨て牌と手牌を合わせてミンカンできるか確認
+                        #print(tehainakami)
+                        for count, element in enumerate(tehaitmp[tehaiplayer]): #赤ドラを移動
+                            if count == 9 and element == 1:
+                                tehaitmp[tehaiplayer][4] += 1
+                                tehaitmp[tehaiplayer][9] -= 1
+                            if count == 19 and element == 1:
+                                tehaitmp[tehaiplayer][14] += 1
+                                tehaitmp[tehaiplayer][19] -= 1
+                            if count == 29 and element == 1:
+                                tehaitmp[tehaiplayer][24] += 1
+                                tehaitmp[tehaiplayer][29] -= 1
+                        for count, element in enumerate(tehaitmp[tehaiplayer]): #捨て牌と手牌を合わせてミンカンできるか確認
                             if element == 4: #手牌と捨て牌を合わせて4枚ある時
                                 indexes.append(count)
                         if indexes != []: #4枚ある時
                             if self.dorall.index(tmp) in indexes: #捨て牌と手牌を合わせて4枚ある時の中に捨て牌がある時
-                                #print(indexes)
-                                #print(tehainakami)
-                                #print(self.dorall.index(tmp))
-                                #print(self.tehaiok)
                                 ## ミンカン用csv処理
                                 data = []
-                                data += tehainakami #手牌
+                                data += self.tehaiok[tehaiplayer] #手牌
                                 for j in range(len(self.reach)): #リーチ自分から見て
                                     index = (tehaiplayer + j) % len(self.reach)
                                     #print(index)
@@ -123,7 +130,34 @@ def dapai(self, i):
                                     data.append(self.score[index] // 100)
                                 data.append(self.tiles) #残り牌数
                                 data.append(0) #0が鳴きなし 1がカン
-                                self.writer.writerow(data)
+                                #self.writer.writerow(data)
+                                self.csvdata = data
                                 ## ミンカン用csv処理終了
+                            elif self.dorall.index(tmp) in [9, 19, 29]:
+                                if self.tehaiok[tehaiplayer][4] == 3 or self.tehaiok[tehaiplayer][14] == 3 or self.tehaiok[tehaiplayer][24] == 3:
+                                    ## ミンカン用csv処理
+                                    data = []
+                                    data += self.tehaiok[tehaiplayer] #手牌
+                                    for j in range(len(self.reach)): #リーチ自分から見て
+                                        index = (tehaiplayer + j) % len(self.reach)
+                                        #print(index)
+                                        data.append(self.reach[index])
+                                    data += self.dora #ドラ34
+                                    data.append(self.parentdora) #場風
+                                    data.append(self.childdora) #自風
+                                    data.append(self.changbang) #何本場
+                                    data.append(self.lizhibang) #リーチ棒繰越
+                                    for k in range(len(self.naki)): #鳴き自分から見て
+                                        index = (tehaiplayer + k) % len(self.naki)
+                                        data.extend(self.naki[index])
+                                    for l in range(len(self.discard)): #捨て牌自分から見て
+                                        index = (tehaiplayer + l) % len(self.discard)
+                                        data.extend(self.discard[index])
+                                    for m in range(len(self.score)): #点数自分から見て
+                                        index = (tehaiplayer + m) % len(self.score)
+                                        data.append(self.score[index] // 100)
+                                    data.append(self.tiles) #残り牌数
+                                    data.append(0) #0が鳴きなし 1がカン
+                                    self.csvdata = data
                     else:
                         raise ValueError("todoがおかしい")
