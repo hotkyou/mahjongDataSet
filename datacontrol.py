@@ -16,7 +16,7 @@ class DataControl:
         self.todo = 3 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
         self.folder_path = "/Users/hotkyou/dev/git/mahjongDataSet/json1/2014json"
         self.json_files = glob.glob(os.path.join(self.folder_path, '**/*.json'), recursive=True)
-        self.writer = csv.writer(open(f"test{self.todo}.csv", mode="w", newline=""))
+        self.writer = csv.writer(open(f"test{self.todo}.csv", mode="w", newline="", encoding="utf-8"))
         self.input_dir = 'json'
         self.json_list = glob.glob('json1/*.json')
         self.all = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8',
@@ -49,7 +49,7 @@ class DataControl:
         print(len(self.json_files))
         for i in tqdm.tqdm(range(len(self.json_files))):
             np.pi*np.pi
-            with open(self.json_files[i]) as file:
+            with open(self.json_files[i], encoding="utf-8") as file:
             #with open(self.url) as file:
                 for line in file:
                     jsondata = json.loads(line)
