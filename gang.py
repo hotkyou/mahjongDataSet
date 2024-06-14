@@ -1,6 +1,6 @@
 def gang(self, i):
     #print(self.csvdata)
-    print(i)
+    #print(i)
     #print("カン")
     player = i["gang"]["l"]
     tile = i["gang"]["m"]
@@ -31,7 +31,7 @@ def gang(self, i):
         # data.append(self.tiles) #残り牌数
         # data.append(1) #0が鳴きなし 1がカン
         # self.writer.writerow(data)
-        print(self.csvdata)
+        #print(self.csvdata)
         if self.csvdata != []:
             self.csvdata[-1] = 1
             self.writer.writerow(self.csvdata)

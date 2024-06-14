@@ -46,7 +46,7 @@ class DataControl:
         # self.deleteLast = deleteLast
         
     def loadJson(self):
-        print(len(self.json_files))
+        #print(len(self.json_files))
         for i in tqdm.tqdm(range(len(self.json_files))):
             np.pi*np.pi
             with open(self.json_files[i], encoding="utf-8") as file:
@@ -62,13 +62,13 @@ class DataControl:
                         # print(self.data)
                         for data in self.data:
                             for i in data:
-                                print(i)
+                                #print(i)
                                 if self.todo == 3:
                                     if self.csvdata != []:
                                         if not "fulou" in i and not "gang" in i:
-                                            print("a")
-                                            print(i)
-                                            print("a")
+                                            # print("a")
+                                            # #print(i)
+                                            # print("a")
                                             self.writer.writerow(self.csvdata)
                                             self.csvdata = []
                                             
