@@ -4,6 +4,7 @@ import os
 import glob
 import tqdm
 import numpy as np
+import pandas as pd
 import enviroment as env
 import dapai, fulou, kaigang, hule, pingju, gang, gangzimo, zimo, error, qipai
 
@@ -12,10 +13,10 @@ class DataControl:
         # jsonのファイル指定 (仮置き)
         self.url = env.json
 
-        self.todo = 1 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
-        self.folder_path = "/Users/hotkyou/dev/git/mahjongDataSet/json1/2012json"
+        self.todo = 3 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
+        self.folder_path = "/Users/hotkyou/dev/git/mahjongDataSet/json1/2014json"
         self.json_files = glob.glob(os.path.join(self.folder_path, '**/*.json'), recursive=True)
-        self.writer = csv.writer(open("test.csv", mode="w", newline=""))
+        self.writer = csv.writer(open(f"test{self.todo}.csv", mode="w", newline="", encoding="utf-8"))
         self.input_dir = 'json'
         self.json_list = glob.glob('json1/*.json')
         self.all = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8',
@@ -36,11 +37,19 @@ class DataControl:
         self.score = [0, 0, 0, 0]  # 点数
         self.tiles = 70  # 残り牌数
         
+        self.csvdata = []
+        
+        #csv削除処理用
+        # def deleteLast():
+        #     a = pd.read_csv(f"test{self.todo}.csv")
+        #     a.iloc[:-1].to_csv(f"test{self.todo}.csv", index=False)
+        # self.deleteLast = deleteLast
+        
     def loadJson(self):
         print(len(self.json_files))
         for i in tqdm.tqdm(range(len(self.json_files))):
             np.pi*np.pi
-            with open(self.json_files[i]) as file:
+            with open(self.json_files[i], encoding="utf-8") as file:
             #with open(self.url) as file:
                 for line in file:
                     jsondata = json.loads(line)
@@ -53,6 +62,16 @@ class DataControl:
                         # print(self.data)
                         for data in self.data:
                             for i in data:
+                                print(i)
+                                if self.todo == 3:
+                                    if self.csvdata != []:
+                                        if not "fulou" in i and not "gang" in i:
+                                            print("a")
+                                            print(i)
+                                            print("a")
+                                            self.writer.writerow(self.csvdata)
+                                            self.csvdata = []
+                                            
                                 if "qipai" in i:
                                     qipai.qipai(self, i)
                                 elif "zimo" in i:

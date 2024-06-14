@@ -8,19 +8,51 @@ def fulou(self, i):
     mpsz = ""
     
     # csv出力処理
-    if self.todo == 1 or self.todo == 2 or self.todo == 3:
-        print(tile)
-        if any(value == 4 for value in Counter(tile).values()): #カン
-            #raise ValueError("カン")
-            
-            pass
-        elif any(value >= 2 for value in Counter(tile).values()): #ぽん
+    if self.todo == 1: #ぽん
+        if any(value == 3 for value in Counter([t.replace('0', '5') for t in tile]).values()): #ぽん
             #raise ValueError("ポン")
+            print(tile)
+            pass
+    elif self.todo == 2: #チー
+        # if ?:
+            #raise ValueError("ポン")
+                #print(tile)
+        pass
+        
+    elif self.todo == 3: #カン
+        if any(value == 4 for value in Counter([t.replace('0', '5') for t in tile]).values()): #カン
+            #raise ValueError("ミンカン")
+            #print(tile)
             
-            pass
-        else:   #チー
-            #raise ValueError("チー")
-            pass
+            # data = []
+            # data += self.tehaiok[player] #手牌
+            # for j in range(len(self.reach)): #リーチ自分から見て
+            #     index = (player + j) % len(self.reach)
+            #     data.append(self.reach[index])
+            # data += self.dora #ドラ34
+            # data.append(self.parentdora) #場風
+            # data.append(self.childdora) #自風
+            # data.append(self.changbang) #何本場
+            # data.append(self.lizhibang) #リーチ棒繰越
+            # for k in range(len(self.naki)): #鳴き自分から見て
+            #     index = (player + k) % len(self.naki)
+            #     data.extend(self.naki[index])
+            # for l in range(len(self.discard)): #捨て牌自分から見て
+            #     index = (player + l) % len(self.discard)
+            #     data.extend(self.discard[index])
+            # for m in range(len(self.score)): #点数自分から見て
+            #     index = (player + m) % len(self.score)
+            #     data.append(self.score[index] // 100)
+            # data.append(self.tiles) #残り牌数
+            # data.append(1) #0が鳴きなし 1がカン
+            # self.writer.writerow(data)
+            if self.csvdata != []:
+                self.csvdata[-1] = 1
+                self.writer.writerow(self.csvdata)
+                self.csvdata = []
+            else:
+                raise ValueError("カン用csv処理エラー")
+            #カン用csv処理終了
     
     for num in range(len(tile)):
         if tile[num] == "m" or tile[num] == "p" or tile[num] == "s" or tile[num] == "z":
