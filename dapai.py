@@ -80,15 +80,51 @@ def dapai(self, i):
                     #print(tehaitmp[tehaiplayer])
 
                     if self.todo == 1: #ぽん
+                    
                         for n, o in enumerate(self.tehaiok):
-                            #print(n, o)
+                            
                             if n != player:
-                                pass
+                                 indexes = []
+                                 for count, element in enumerate(tehaitmp[tehaiplayer]):#捨て牌と手牌を合わせてミンカンできるか確認
+                                     if element == 3: #手牌と捨て牌を合わせて4枚ある時
+                                         indexes.append(count)
+                                         
+                                        
+                                 if indexes != []: #4枚ある時
+                                     if self.dorall.index(tmp) in indexes:
+                                         data=[]
+                                         data += self.tehaiok[tehaiplayer] 
+                                         for j in range(len(self.reach)): #リーチ自分から見て
+                                             index = (tehaiplayer + j) % len(self.reach)
+                                             data.append(self.reach[index])
+                                         data += self.dora #ドラ34
+                                         data.append(self.parentdora) #場風
+                                         data.append(self.childdora) #自風
+                                         data.append(self.changbang) #何本場
+                                         data.append(self.lizhibang) #リーチ棒繰越
+                                         for k in range(len(self.naki)): #鳴き自分から見て
+                                            index = (tehaiplayer + k) % len(self.naki)
+                                            data.extend(self.naki[index])
+                                         for l in range(len(self.discard)): #捨て牌自分から見て
+                                            index = (tehaiplayer + l) % len(self.discard)
+                                            data.extend(self.discard[index])
+                                         for m in range(len(self.score)): #点数自分から見て
+                                            index = (tehaiplayer + m) % len(self.score)
+                                            data.append(self.score[index] // 100)
+                                         data.append(self.tiles) #残り牌数
+                                         data.append(0) #0が鳴きなし 1がカン
+                                #self.writer.writerow(data)
+                                         self.csvdata = data
+                                         print(data)
+                                         print('data')
+                                        
+                                      
                     elif self.todo == 2: #チー
                         for n, o in enumerate(self.tehaiok):
                             #print(n, o)
                             if n != player:
                                 pass
+
                     elif self.todo == 3: #カンをしたらgangで削除処理　全プレイヤーの手牌を処理
                         indexes = []
                         #print(tehainakami)
