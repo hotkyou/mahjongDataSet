@@ -11,7 +11,6 @@ def fulou(self, i):
 
         if any(value == 3 for value in Counter([t.replace('0', '5') for t in tile]).values()):#ぽん
             if self.csvdata != []:
-                print('hungry')
                 self.csvdata[-1] = 1
                 self.writer.writerow(self.csvdata)
                 self.csvdata = []

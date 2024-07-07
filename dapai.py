@@ -78,47 +78,55 @@ def dapai(self, i):
                 if self.reach[tehaiplayer] != 1: #立直してない人のみ
                     tehaitmp[tehaiplayer][self.dorall.index(tmp)] += 1
                     #print(tehaitmp[tehaiplayer])
+                    
+                    def sendCSV():
+                        data = []
+                        data += self.tehaiok[tehaiplayer] #手牌
+                        for j in range(len(self.reach)): #リーチ自分から見て
+                            index = (tehaiplayer + j) % len(self.reach)
+                            #print(index)
+                            data.append(self.reach[index])
+                        data += self.dora #ドラ34
+                        data.append(self.parentdora) #場風
+                        data.append(self.childdora) #自風
+                        data.append(self.changbang) #何本場
+                        data.append(self.lizhibang) #リーチ棒繰越
+                        for k in range(len(self.naki)): #鳴き自分から見て
+                            index = (tehaiplayer + k) % len(self.naki)
+                            data.extend(self.naki[index])
+                        for l in range(len(self.discard)): #捨て牌自分から見て
+                            index = (tehaiplayer + l) % len(self.discard)
+                            data.extend(self.discard[index])
+                        for m in range(len(self.score)): #点数自分から見て
+                            index = (tehaiplayer + m) % len(self.score)
+                            data.append(self.score[index] // 100)
+                        data.append(self.tiles) #残り牌数
+                        data.append(0) #0が鳴きなし 1が鳴き
+                        self.csvdata = data
 
                     if self.todo == 1: #ぽん
-                    
-                        for n, o in enumerate(self.tehaiok):
-                            
-                            if n != player:
-                                 indexes = []
-                                 for count, element in enumerate(tehaitmp[tehaiplayer]):#捨て牌と手牌を合わせてミンカンできるか確認
-                                     if element == 3: #手牌と捨て牌を合わせて4枚ある時
-                                         indexes.append(count)
-                                         
+                        indexes = []
+                        #print(tehainakami)
+                        for count, element in enumerate(tehaitmp[tehaiplayer]): #赤ドラを移動
+                            if count == 9 and element == 1:
+                                tehaitmp[tehaiplayer][4] += 1
+                                tehaitmp[tehaiplayer][9] -= 1
+                            if count == 19 and element == 1:
+                                tehaitmp[tehaiplayer][14] += 1
+                                tehaitmp[tehaiplayer][19] -= 1
+                            if count == 29 and element == 1:
+                                tehaitmp[tehaiplayer][24] += 1
+                                tehaitmp[tehaiplayer][29] -= 1
+                        for count, element in enumerate(tehaitmp[tehaiplayer]): #捨て牌と手牌を合わせてポンできるか確認
+                            if element >= 3: #手牌と捨て牌を合わせて3枚以上ある時
+                                indexes.append(count)
+                        if indexes != []: #3枚以上ある時
+                            if self.dorall.index(tmp) in indexes:
+                                sendCSV()
+                            elif self.dorall.index(tmp) in [9, 19, 29]:
+                                if self.tehaiok[tehaiplayer][4] == 2 or self.tehaiok[tehaiplayer][14] == 2 or self.tehaiok[tehaiplayer][24] == 2:
+                                    sendCSV()
                                         
-                                 if indexes != []: #4枚ある時
-                                     if self.dorall.index(tmp) in indexes:
-                                         data=[]
-                                         data += self.tehaiok[tehaiplayer] 
-                                         for j in range(len(self.reach)): #リーチ自分から見て
-                                             index = (tehaiplayer + j) % len(self.reach)
-                                             data.append(self.reach[index])
-                                         data += self.dora #ドラ34
-                                         data.append(self.parentdora) #場風
-                                         data.append(self.childdora) #自風
-                                         data.append(self.changbang) #何本場
-                                         data.append(self.lizhibang) #リーチ棒繰越
-                                         for k in range(len(self.naki)): #鳴き自分から見て
-                                            index = (tehaiplayer + k) % len(self.naki)
-                                            data.extend(self.naki[index])
-                                         for l in range(len(self.discard)): #捨て牌自分から見て
-                                            index = (tehaiplayer + l) % len(self.discard)
-                                            data.extend(self.discard[index])
-                                         for m in range(len(self.score)): #点数自分から見て
-                                            index = (tehaiplayer + m) % len(self.score)
-                                            data.append(self.score[index] // 100)
-                                         data.append(self.tiles) #残り牌数
-                                         data.append(0) #0が鳴きなし 1がカン
-                                #self.writer.writerow(data)
-                                         self.csvdata = data
-                                         print(data)
-                                         print('data')
-                                        
-                                      
                     elif self.todo == 2: #チー
                         for n, o in enumerate(self.tehaiok):
                             #print(n, o)
@@ -166,7 +174,6 @@ def dapai(self, i):
                                     data.append(self.score[index] // 100)
                                 data.append(self.tiles) #残り牌数
                                 data.append(0) #0が鳴きなし 1がカン
-                                #self.writer.writerow(data)
                                 self.csvdata = data
                                 ## ミンカン用csv処理終了
                             elif self.dorall.index(tmp) in [9, 19, 29]:
