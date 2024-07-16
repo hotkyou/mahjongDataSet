@@ -226,10 +226,66 @@ def dapai(self, i):
                                     sendCSV()
                                         
                     elif self.todo == 2: #チー
-                        for n, o in enumerate(self.tehaiok):
+                        chi_possible = False
+                        for count, element in enumerate(tehaitmp[tehaiplayer]): #赤ドラを移動
+                            if count == 9 and element == 1:
+                                tehaitmp[tehaiplayer][4] += 1
+                                tehaitmp[tehaiplayer][9] -= 1
+                                print(tehaitmp[tehaiplayer][9])
+                            if count == 19 and element == 1:
+                                tehaitmp[tehaiplayer][14] += 1
+                                tehaitmp[tehaiplayer][19] -= 1
+                            if count == 29 and element == 1:
+                                tehaitmp[tehaiplayer][24] += 1
+                                tehaitmp[tehaiplayer][29] -= 1
+
+                        tile_index=self.dorall.index(tmp)
+                        if tile_index< 27:
+                            mod = tile_index % 9
+                            if mod >= 2 and tehaitmp[tehaiplayer][tile_index - 2] > 0 and tehaitmp[tehaiplayer][tile_index - 1] > 0:
+                                print(mod)
+                                chi_possible = True
+                            if mod >= 1 and mod <= 7 and tehaitmp[tehaiplayer][tile_index - 1] > 0 and tehaitmp[tehaiplayer][tile_index + 1] > 0:
+                                chi_possible = True
+                            if mod <= 6 and tehaitmp[tehaiplayer][tile_index + 1] > 0 and tehaitmp[tehaiplayer][tile_index + 2] > 0:
+                                chi_possible = True
+                        if chi_possible:
+                            data = []
+                            data += self.tehaiok[player] #手牌
+                            for j in range(len(self.reach)): #リーチ自分から見て
+                                index = (player + j) % len(self.reach)
+                                #print(index)
+                                data.append(self.reach[index])
+                            data += self.dora #ドラ34
+                            data.append(self.parentdora) #場風
+                            data.append(self.childdora) #自風
+                            data.append(self.changbang) #何本場
+                            data.append(self.lizhibang) #リーチ棒繰越
+                            for k in range(len(self.naki)): #鳴き自分から見て
+                                index = (player + k) % len(self.naki)
+                                data.extend(self.naki[index])
+                            for l in range(len(self.discard)): #捨て牌自分から見て
+                                index = (player + l) % len(self.discard)
+                                data.extend(self.discard[index])
+                            for m in range(len(self.score)): #点数自分から見て
+                                index = (player + m) % len(self.score)
+                                data.append(self.score[index] // 100)
+                            data.append(self.tiles) #残り牌数
+                            data.append(37) #37が鳴きなし それ以外が鳴き
+                            self.writer.writerow(data)
+                               
+                            print(tile_index)
+                            exit()
+                            print(tehaitmp[tehaiplayer])
+                            print('end333')
+                           
+
+
+                            print
                             #print(n, o)
-                            if n != player:
-                                pass
+                        else:
+                            pass
+                            
 
                     elif self.todo == 3: #カンをしたらgangで削除処理　全プレイヤーの手牌を処理
                         indexes = []

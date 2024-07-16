@@ -1,4 +1,5 @@
 from collections import Counter
+import copy
 
 def fulou(self, i):
     #print("鳴き")
@@ -16,10 +17,31 @@ def fulou(self, i):
                 self.csvdata = []
 
     elif self.todo == 2: #チー
+       for tehaiplayer, tehainakami in enumerate(tehaitmp):
+        tmp = tile[:-2]
+        tile_index=self.dorall.index(tmp)
+        tehaitmp = copy.deepcopy(self.tehaiok)
+        print(tile)
+        if tile_index< 27:
+            mod = tile_index % 9
+            if mod >= 2 and tehaitmp[tehaiplayer][tile_index - 2] > 0 and tehaitmp[tehaiplayer][tile_index - 1] > 0:
+                print(mod)
+                self.csvdata[-1] = tile_index-2
+                self.writer.writerow(self.csvdata)
+                self.csvdata = []
+            if mod >= 1 and mod <= 7 and tehaitmp[tehaiplayer][tile_index - 1] > 0 and tehaitmp[tehaiplayer][tile_index + 1] > 0:
+                self.csvdata[-1] = tile_index-1
+                self.writer.writerow(self.csvdata)
+                self.csvdata = []
+            if mod <= 6 and tehaitmp[tehaiplayer][tile_index + 1] > 0 and tehaitmp[tehaiplayer][tile_index + 2] > 0:
+                self.csvdata[-1] = tile_index
+                self.writer.writerow(self.csvdata)
+                self.csvdata = []
+            
         # if ?:
             #raise ValueError("ポン")
                 #print(tile)
-        pass
+        
         
     elif self.todo == 3: #カン
         if any(value == 4 for value in Counter([t.replace('0', '5') for t in tile]).values()): #カン
