@@ -10,10 +10,10 @@ import dapai, fulou, kaigang, hule, pingju, gang, gangzimo, zimo, error, qipai
 class DataControl:
     def __init__(self):
 
-        self.todo = 1 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
+        self.todo = 4 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
         self.folder_path = "/Users/hotkyou/dev/git/mahjongDataSet/json1"
         self.json_files = glob.glob(os.path.join(self.folder_path, '**/*.json'), recursive=True)
-        self.writer = csv.writer(open(f"pon.csv", mode="w", newline="", encoding="utf-8"))
+        self.writer = csv.writer(open(f"reach.csv", mode="w", newline="", encoding="utf-8"))
         self.input_dir = 'json'
         self.json_list = glob.glob('json1/*.json')
         self.all = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8',
