@@ -1,6 +1,8 @@
 import csv
 import copy
 from collections import Counter
+from mahjong.shanten import Shanten
+from mahjong.tile import TilesConverter
 
 def dapai(self, i):
     #print("捨て牌")
@@ -15,13 +17,65 @@ def dapai(self, i):
         if len(tile) >= 3:
             if tile[-2:] == "_*":
                 tmp = tile[:-2]
-                self.dora[player] = 1
+                # -- リーチ時csv格納処理 --
+                if self.todo == 4:
+                    data = []
+                    data += self.tehaiok[player] #手牌
+                    for j in range(len(self.reach)): #リーチ自分から見て
+                        index = (player + j) % len(self.reach)
+                        #print(index)
+                        data.append(self.reach[index])
+                    data += self.dora #ドラ34
+                    data.append(self.parentdora) #場風
+                    data.append(self.childdora) #自風
+                    data.append(self.changbang) #何本場
+                    data.append(self.lizhibang) #リーチ棒繰越
+                    for k in range(len(self.naki)): #鳴き自分から見て
+                        index = (player + k) % len(self.naki)
+                        data.extend(self.naki[index])
+                    for l in range(len(self.discard)): #捨て牌自分から見て
+                        index = (player + l) % len(self.discard)
+                        data.extend(self.discard[index])
+                    for m in range(len(self.score)): #点数自分から見て
+                        index = (player + m) % len(self.score)
+                        data.append(self.score[index] // 100)
+                    data.append(self.tiles) #残り牌数
+                    data.append(self.dorall.index(tmp)) #37が鳴きなし それ以外が鳴き
+                    self.writer.writerow(data)
+                # -- リーチ時csv格納処理終 --
+                self.reach[player] = 1
                 self.score[player] -= 1000
             elif tile[2] == "_": # 同じ牌を捨てる
                 tmp = tile[:-1]
             elif tile[2] == "*": # リーチした時
                 tmp = tile[:-1]
-                self.dora[player] = 1
+                # -- リーチ時csv格納処理 --
+                if self.todo == 4:
+                    data = []
+                    data += self.tehaiok[player] #手牌
+                    for j in range(len(self.reach)): #リーチ自分から見て
+                        index = (player + j) % len(self.reach)
+                        #print(index)
+                        data.append(self.reach[index])
+                    data += self.dora #ドラ34
+                    data.append(self.parentdora) #場風
+                    data.append(self.childdora) #自風
+                    data.append(self.changbang) #何本場
+                    data.append(self.lizhibang) #リーチ棒繰越
+                    for k in range(len(self.naki)): #鳴き自分から見て
+                        index = (player + k) % len(self.naki)
+                        data.extend(self.naki[index])
+                    for l in range(len(self.discard)): #捨て牌自分から見て
+                        index = (player + l) % len(self.discard)
+                        data.extend(self.discard[index])
+                    for m in range(len(self.score)): #点数自分から見て
+                        index = (player + m) % len(self.score)
+                        data.append(self.score[index] // 100)
+                    data.append(self.tiles) #残り牌数
+                    data.append(self.dorall.index(tmp)) #37が鳴きなし それ以外が鳴き
+                    self.writer.writerow(data)
+                # -- リーチ時csv格納処理終 --
+                self.reach[player] = 1
                 self.score[player] -= 1000
             else: #例外
                 print(i)
@@ -49,11 +103,55 @@ def dapai(self, i):
                 data.extend(self.discard[index])
             for m in range(len(self.score)): #点数自分から見て
                 index = (player + m) % len(self.score)
-                data.append(self.score[index])
+                data.append(self.score[index] // 100)
             data.append(self.tiles) #残り牌数
             data.append(self.dorall.index(tmp)) #何を捨てたか
             self.writer.writerow(data)
         # -- CSV処理終了 --
+        # -- テンパイ確認処理 --
+        elif self.todo == 4:
+            if self.reach[player] != 1 and sum(self.tehaiok[player]) == 14:
+                shanten = Shanten()
+
+                man = ''.join([self.dorall[i][1] * self.tehaiok[player][i] for i in range(9)]) + '5' * self.tehaiok[player][9]
+                pin = ''.join([self.dorall[i][1] * self.tehaiok[player][i] for i in range(10, 19)]) + '5' * self.tehaiok[player][19]
+                sou = ''.join([self.dorall[i][1] * self.tehaiok[player][i] for i in range(20, 29)]) + '5' * self.tehaiok[player][29]
+                honors = ''.join([self.dorall[i][1] * self.tehaiok[player][i] for i in range(30, 37)])
+
+                # 34配列を文字列形式に変換
+                tiles_str = TilesConverter.string_to_34_array(man=man, pin=pin, sou=sou, honors=honors)
+
+                # シャンテン数を計算
+                shanten_number = shanten.calculate_shanten(tiles_str)
+                
+                if shanten_number == 0:
+                    # print(self.tehaiok[player])
+                    # print(shanten_number, tile)
+                    # print(self.reach, player)
+                    data = []
+                    data += self.tehaiok[player] #手牌
+                    for j in range(len(self.reach)): #リーチ自分から見て
+                        index = (player + j) % len(self.reach)
+                        #print(index)
+                        data.append(self.reach[index])
+                    data += self.dora #ドラ34
+                    data.append(self.parentdora) #場風
+                    data.append(self.childdora) #自風
+                    data.append(self.changbang) #何本場
+                    data.append(self.lizhibang) #リーチ棒繰越
+                    for k in range(len(self.naki)): #鳴き自分から見て
+                        index = (player + k) % len(self.naki)
+                        data.extend(self.naki[index])
+                    for l in range(len(self.discard)): #捨て牌自分から見て
+                        index = (player + l) % len(self.discard)
+                        data.extend(self.discard[index])
+                    for m in range(len(self.score)): #点数自分から見て
+                        index = (player + m) % len(self.score)
+                        data.append(self.score[index] // 100)
+                    data.append(self.tiles) #残り牌数
+                    data.append(37) #37が鳴きなし それ以外が鳴き
+                    self.writer.writerow(data)
+        # -- テンパイ確認処理終 --
         
     else: #リーチしている時
         tmp = tile[:2] #手牌に入れる必要はないが捨て牌に追加する必要はある
@@ -202,5 +300,7 @@ def dapai(self, i):
                                     data.append(self.tiles) #残り牌数
                                     data.append(0) #0が鳴きなし 1がカン
                                     self.csvdata = data
+                    elif self.todo == 4:
+                        pass
                     else:
                         raise ValueError("todoがおかしい")
