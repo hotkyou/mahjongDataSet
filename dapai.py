@@ -170,6 +170,83 @@ def dapai(self, i):
     #手牌一時保存・手牌に捨て牌追加して鳴きチェック
     if self.todo != 0:
         tehaitmp = copy.deepcopy(self.tehaiok) #現在の手牌に捨て牌を追加して鳴きをチェックするための変数
+        
+        if self.todo == 2: #チー
+            self.callplayer = player + 1
+            if self.callplayer == 4:
+                self.callplayer = 0
+            if self.reach[self.callplayer] != 1: #立直してない人のみ
+                calltehaiok = copy.deepcopy(tehaitmp[self.callplayer])
+                #print(tmp)
+                sutehaitmp = self.dorall.index(tmp)
+                if sutehaitmp in [9, 19, 29]: #捨て牌が赤ドラの時
+                    sutehaitmp -= 5
+                if calltehaiok[9] == 1:
+                    calltehaiok[9] -= 1
+                    calltehaiok[4] += 1
+                elif calltehaiok[19] == 1:
+                    calltehaiok[19] -= 1
+                    calltehaiok[14] += 1
+                elif calltehaiok[29] == 1:
+                    calltehaiok[29] -= 1
+                    calltehaiok[24] += 1
+                
+                
+                # チーできるパターンを格納する配列
+                chi_patterns = []
+
+                # マンズの場合
+                if 0 <= sutehaitmp <= 8:
+                    tile_type = 0  # マンズ
+                    tile_num = sutehaitmp
+                # ピンズの場合
+                elif 10 <= sutehaitmp <= 18:
+                    tile_type = 10  # ピンズ
+                    tile_num = sutehaitmp - 10
+                # ソウズの場合
+                elif 20 <= sutehaitmp <= 28:
+                    tile_type = 20  # ソウズ
+                    tile_num = sutehaitmp - 20
+                else:
+                    return chi_patterns  # それ以外は無視
+
+                possible_patterns = [
+                    [-2, -1], [-1, 1], [1, 2]
+                ]
+                
+                for pattern in possible_patterns:
+                    chi_candidate = [tile_num + pattern[0], tile_num + pattern[1]]
+                    if all(0 <= num <= 8 for num in chi_candidate) and all(calltehaiok[tile_type + num] > 0 for num in chi_candidate):
+                        chi_patterns.append([tile_type + num for num in chi_candidate])
+                
+                if chi_patterns != []:
+                    #print(chi_patterns, sutehaitmp)
+                    data = []
+                    data += self.tehaiok[self.callplayer] #手牌
+                    for j in range(len(self.reach)): #リーチ自分から見て
+                        index = (self.callplayer + j) % len(self.reach)
+                        #print(index)
+                        data.append(self.reach[index])
+                    data += self.dora #ドラ34
+                    data.append(self.parentdora) #場風
+                    #data.append(self.childdora) #自風
+                    data.append(self.callplayer) #自風
+                    data.append(self.changbang) #何本場
+                    data.append(self.lizhibang) #リーチ棒繰越
+                    for k in range(len(self.naki)): #鳴き自分から見て
+                        index = (self.callplayer + k) % len(self.naki)
+                        data.extend(self.naki[index])
+                    for l in range(len(self.discard)): #捨て牌自分から見て
+                        index = (self.callplayer + l) % len(self.discard)
+                        data.extend(self.discard[index])
+                    for m in range(len(self.score)): #点数自分から見て
+                        index = (self.callplayer + m) % len(self.score)
+                        data.append(self.score[index] // 100)
+                    data.append(self.tiles) #残り牌数
+                    data.append(37) #37が鳴きなし それ以外が鳴き
+                    self.csvdata = data
+                #チー終わり
+            
         for tehaiplayer, tehainakami in enumerate(tehaitmp):
             #print(tehaiplayer, tehainakami)
             if tehaiplayer != player:   #捨て牌を捨てた本人は鳴けないのでスキップ
@@ -224,12 +301,9 @@ def dapai(self, i):
                             elif self.dorall.index(tmp) in [9, 19, 29]:
                                 if self.tehaiok[tehaiplayer][4] == 2 or self.tehaiok[tehaiplayer][14] == 2 or self.tehaiok[tehaiplayer][24] == 2:
                                     sendCSV()
-                                        
+                    
                     elif self.todo == 2: #チー
-                        for n, o in enumerate(self.tehaiok):
-                            #print(n, o)
-                            if n != player:
-                                pass
+                        pass
 
                     elif self.todo == 3: #カンをしたらgangで削除処理　全プレイヤーの手牌を処理
                         indexes = []
