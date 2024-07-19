@@ -1,3 +1,4 @@
+from collections import Counter
 import csv
 import json
 import os
@@ -10,10 +11,10 @@ import dapai, fulou, kaigang, hule, pingju, gang, gangzimo, zimo, error, qipai
 class DataControl:
     def __init__(self):
 
-        self.todo = 4 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
+        self.todo = 2 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ
         self.folder_path = "/Users/hotkyou/dev/git/mahjongDataSet/json1"
         self.json_files = glob.glob(os.path.join(self.folder_path, '**/*.json'), recursive=True)
-        self.writer = csv.writer(open(f"reach.csv", mode="w", newline="", encoding="utf-8"))
+        self.writer = csv.writer(open(f"chii.csv", mode="w", newline="", encoding="utf-8"))
         self.input_dir = 'json'
         self.json_list = glob.glob('json1/*.json')
         self.all = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8',
@@ -35,6 +36,7 @@ class DataControl:
         self.tiles = 70  # 残り牌数
         
         self.csvdata = []
+        self.callplayer = 0
         
     def loadJson(self):
         for i in tqdm.tqdm(range(len(self.json_files))):
@@ -60,6 +62,17 @@ class DataControl:
                                 elif self.todo == 1:
                                     if self.csvdata != []:
                                         if not "fulou" in i:
+                                            self.writer.writerow(self.csvdata)
+                                            self.csvdata = []
+                                elif self.todo == 2:
+                                    if self.csvdata != []:
+                                        if "fulou" in i:
+                                            if all(value == 1 for value in Counter([t.replace('0', '5') for t in i["fulou"]["m"]]).values()):
+                                                pass
+                                            else:
+                                                self.writer.writerow(self.csvdata)
+                                                self.csvdata = []
+                                        else:
                                             self.writer.writerow(self.csvdata)
                                             self.csvdata = []
                                             

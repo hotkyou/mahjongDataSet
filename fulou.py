@@ -16,10 +16,40 @@ def fulou(self, i):
                 self.csvdata = []
 
     elif self.todo == 2: #チー
-        # if ?:
-            #raise ValueError("ポン")
-                #print(tile)
-        pass
+        if all(value == 1 for value in Counter([t.replace('0', '5') for t in tile]).values()):#ぽん
+            # print(i)
+            result = self.dorall.index(tile[:2])
+            if self.csvdata != []:
+                # print(result)
+                # print(self.csvdata)
+                self.csvdata[-1] = result
+                self.writer.writerow(self.csvdata)
+                self.csvdata = []
+            else:
+                data = []
+                data += self.tehaiok[player] #手牌
+                for j in range(len(self.reach)): #リーチ自分から見て
+                    index = (player + j) % len(self.reach)
+                    #print(index)
+                    data.append(self.reach[index])
+                data += self.dora #ドラ34
+                data.append(self.parentdora) #場風
+                #data.append(self.childdora) #自風
+                data.append(player) #自風
+                data.append(self.changbang) #何本場
+                data.append(self.lizhibang) #リーチ棒繰越
+                for k in range(len(self.naki)): #鳴き自分から見て
+                    index = (player + k) % len(self.naki)
+                    data.extend(self.naki[index])
+                for l in range(len(self.discard)): #捨て牌自分から見て
+                    index = (player + l) % len(self.discard)
+                    data.extend(self.discard[index])
+                for m in range(len(self.score)): #点数自分から見て
+                    index = (player + m) % len(self.score)
+                    data.append(self.score[index] // 100)
+                data.append(self.tiles) #残り牌数
+                data.append(result) #37が鳴きなし それ以外が鳴き
+                self.csvdata = data
         
     elif self.todo == 3: #カン
         if any(value == 4 for value in Counter([t.replace('0', '5') for t in tile]).values()): #カン
