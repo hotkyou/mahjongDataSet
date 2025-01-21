@@ -153,3 +153,7 @@ def zimo(self, i):
                     data.append(self.tiles) #残り牌数
                     data.append(0) #0が鳴きなし 1がカン
                     self.csvdata = data
+
+    if self.todo == 5:
+        self.zimotile = [1, self.dorall.index(i[z]["p"]), i[z]["l"]]
+        self.dapaitile = [0, -1, -1]

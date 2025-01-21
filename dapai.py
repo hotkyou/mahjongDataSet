@@ -376,5 +376,8 @@ def dapai(self, i):
                                     self.csvdata = data
                     elif self.todo == 4:
                         pass
+                    elif self.todo == 5:
+                        self.dapaitile = [1, self.dorall.index(tmp), player]
+                        self.zimotile = [0, -1, -1]
                     else:
                         raise ValueError("todoがおかしい")
