@@ -12,7 +12,7 @@ class DataControl:
     def __init__(self):
 
         self.todo = 5 # 0:捨て牌 1:ポン 2:チー 3:カン 4:リーチ 5:危険牌
-        self.folder_path = "/Users/hotkyou/dev/git/mahjongDataSet/json1"
+        self.folder_path = "../2012json"
         self.json_files = glob.glob(os.path.join(self.folder_path, '**/*.json'), recursive=True)
         self.writer = csv.writer(open(f"risky.csv", mode="w", newline="", encoding="utf-8"))
         self.input_dir = 'json'
