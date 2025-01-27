@@ -380,9 +380,6 @@ def dapai(self, i):
                         self.dapaitile = [1, self.dorall.index(tmp), player]
                         self.zimotile = [0, -1, -1]
                     elif self.todo==6:
-                        self.dapaitile = [1, self.dorall.index(tmp), player]
-                        self.zimotile = [0, -1, -1]
-                         
-                        
+                        pass
                     else:
                         raise ValueError("todoがおかしい")
